@@ -17,13 +17,14 @@ BOOST_AUTO_TEST_CASE(a_new_school_has_an_empty_roster)
   BOOST_REQUIRE(school_.roster().empty());
 }
 
+#if defined(EXERCISM_RUN_ALL_TESTS)
 BOOST_AUTO_TEST_CASE(adding_a_student_adds_them_to_the_roster_for_the_given_grade)
 {
   school_.add("Aimee", 2);
 
   const auto actual = school_.roster();
 
-  const map<int, vector<string>> expected{{2, {"Aimee"}}};
+  const map<int, set<string>> expected{{2, {"Aimee"}}};
   REQUIRE_EQUAL_CONTAINERS(expected, actual);
 }
 
@@ -35,7 +36,7 @@ BOOST_AUTO_TEST_CASE(adding_more_students_to_the_same_grade_adds_them_to_the_ros
 
     const auto actual = school_.roster();
 
-    const map<int, vector<string>> expected{{2, {"Blair", "James", "Paul"}}};
+    const map<int, set<string>> expected{{2, {"Blair", "James", "Paul"}}};
     REQUIRE_EQUAL_CONTAINERS(expected, actual);
 }
 
@@ -46,7 +47,7 @@ BOOST_AUTO_TEST_CASE(adding_students_to_different_grades_adds_them_to_the_roster
 
     const auto actual = school_.roster();
 
-    const map<int, vector<string>> expected{{3, {"Chelsea"}}, {7, {"Logan"}}};
+    const map<int, set<string>> expected{{3, {"Chelsea"}}, {7, {"Logan"}}};
     REQUIRE_EQUAL_CONTAINERS(expected, actual);
 }
 
@@ -58,7 +59,7 @@ BOOST_AUTO_TEST_CASE(grade_returns_the_students_in_that_grade_in_alphabetical_or
 
     const auto actual = school_.grade(5);
 
-    const vector<string> expected{"Bradley", "Franklin"};
+    const set<string> expected{"Bradley", "Franklin"};
     REQUIRE_EQUAL_CONTAINERS(expected, actual);
 }
 
@@ -78,14 +79,13 @@ BOOST_AUTO_TEST_CASE(the_student_names_in_each_grade_in_the_roster_are_sorted)
 
     const auto actual = school_.roster();
 
-    const map<int, vector<string>> expected{
-            {3, {"Kyle"}},
-            {4, {"Christopher", "Jennifer"}},
-            {6, {"Kareem"}}
-        };
+    const map<int, set<string>> expected{
+      {3, {"Kyle"}},
+      {4, {"Christopher", "Jennifer"}},
+      {6, {"Kareem"}}
+    };
     REQUIRE_EQUAL_CONTAINERS(expected, actual);
 }
-#if defined(EXERCISM_RUN_ALL_TESTS)
 #endif
 
 BOOST_AUTO_TEST_SUITE_END();

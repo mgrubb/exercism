@@ -1,12 +1,12 @@
 #ifndef _GRADE_SCHOOL_H_
 #define _GRADE_SCHOOL_H_
-#include <vector>
+#include <set>
 #include <map>
 #include <string>
 namespace grade_school
 {
   
-  typedef std::map<int, std::vector<std::string>> roster_type;
+  typedef std::map<int, std::set<std::string>> roster_type;
   class school
   {
   private:
@@ -15,7 +15,7 @@ namespace grade_school
     school();
     roster_type roster();
     void add(std::string, int);
-    std::vector<std::string> grade(int);
+    std::set<std::string> grade(int);
   };
 };
 #endif /* _GRADE_SCHOOL_H_ */

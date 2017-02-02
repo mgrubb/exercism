@@ -3,6 +3,7 @@
 
 #include <utility>
 #include <vector>
+#include <set>
 #include <boost/version.hpp>
 
 #if BOOST_VERSION >= 105900
@@ -16,23 +17,36 @@ namespace tt_detail
 
 // teach Boost.Test how to print std::vector<T>
 template <typename T>
-inline std::ostream &operator<<(std::ostream &str, std::vector<T> const &items)
-{
+  inline std::ostream &operator<<(std::ostream &str, std::vector<T> const &items)
+  {
     str << '[';
     bool first = true;
     for (auto const& element : items) {
-        str << (!first ? "," : "") << element;
-        first = false;
+      str << (!first ? "," : "") << element;
+      first = false;
     }
     return str << ']';
-}
+  }
+
+// teach Boost.Test how to print std::set<T>
+ template <typename T>
+   inline std::ostream &operator<<(std::ostream &str, std::set<T> const &items)
+   {
+     str << "<[";
+     bool first = true;
+     for (auto const& element : items) {
+       str << (!first ? "," : "") << element;
+       first = false;
+     }
+     return str << "]>";
+   }
 
 // teach Boost.Test how to print std::pair<K,V>
-template <typename K, typename V>
-inline std::ostream &operator<<(std::ostream &str, std::pair<K, V> const& item)
-{
-    return str << '<' << item.first << ',' << item.second << '>';
-}
+ template <typename K, typename V>
+   inline std::ostream &operator<<(std::ostream &str, std::pair<K, V> const& item)
+ {
+   return str << '<' << item.first << ',' << item.second << '>';
+ }
 
  template <class F, class S>
    struct print_log_value<::std::pair<F,S>>
@@ -62,6 +76,20 @@ namespace boost
   template <typename T>
     inline wrap_stringstream&
     operator<<(wrap_stringstream& wrapped, std::vector<T> const& item)
+    {
+      wrapped << '[';
+      bool first = true;
+      for (auto const& element : item) {
+        wrapped << (!first ? "," : "") << element;
+        first = false;
+      }
+      return wrapped << ']';
+    }
+
+  // teach Boost.Test how to print std::set to wrap_stringstream
+  template <typename T>
+    inline wrap_stringstream&
+    operator<<(wrap_stringstream& wrapped, std::set<T> const& item)
     {
       wrapped << '[';
       bool first = true;
